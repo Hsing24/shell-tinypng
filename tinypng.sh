@@ -16,7 +16,7 @@
 #   -h, --help   顯示說明
 #
 # 環境變數:
-#   TINYFY_API_KEY   TinyPNG API Key（必填）
+#   TINYPNG_API_KEY  TinyPNG API Key（必填）
 #
 
 set -euo pipefail
@@ -62,7 +62,7 @@ usage() {
   echo "  node_modules, .git, vendor"
   echo ""
   echo -e "${BOLD}環境變數:${RESET}"
-  echo "  TINYFY_API_KEY   TinyPNG API Key（必填，免費方案每月 500 張）"
+  echo "  TINYPNG_API_KEY  TinyPNG API Key（必填，免費方案每月 500 張）"
 }
 
 human_size() {
@@ -132,7 +132,7 @@ compress_image() {
   local header_file="/tmp/tinypng_headers_$$"
   local response
   response=$(curl -s -w "\n%{http_code}" \
-    --user "api:${TINYFY_API_KEY}" \
+    --user "api:${TINYPNG_API_KEY}" \
     --data-binary @"$input_file" \
     --dump-header "$header_file" \
     "https://api.tinify.com/shrink")
@@ -159,7 +159,7 @@ compress_image() {
   fi
 
   # Step 2: 下載壓縮後的圖片（覆蓋原檔）
-  curl -s --user "api:${TINYFY_API_KEY}" \
+  curl -s --user "api:${TINYPNG_API_KEY}" \
     --output "$input_file" \
     "$location"
 
@@ -219,9 +219,9 @@ done
 
 # ── 檢查前置條件 ──
 
-if [[ -z "${TINYFY_API_KEY:-}" ]]; then
-  echo -e "${RED}錯誤: 請設定環境變數 TINYFY_API_KEY${RESET}" >&2
-  echo "  export TINYFY_API_KEY=\"your-api-key\"" >&2
+if [[ -z "${TINYPNG_API_KEY:-}" ]]; then
+  echo -e "${RED}錯誤: 請設定環境變數 TINYPNG_API_KEY${RESET}" >&2
+  echo "  export TINYPNG_API_KEY=\"your-api-key\"" >&2
   echo "  免費申請: https://tinypng.com/developers" >&2
   exit 1
 fi
@@ -348,9 +348,9 @@ FAIL=0
 
 for f in "${FILES[@]}"; do
   if compress_image "$f" "$f"; then
-    ((SUCCESS++))
+    SUCCESS=$((SUCCESS + 1))
   else
-    ((FAIL++))
+    FAIL=$((FAIL + 1))
   fi
 done
 

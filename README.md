@@ -14,6 +14,22 @@
 
 ## 安裝
 
+### 一鍵安裝
+
+安裝器預設只寫入目前使用者的 `~/.local/bin`，執行前會顯示來源與目標並要求確認：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Hsing24/shell-tinypng/main/install.sh | bash
+```
+
+確認來源可信後，也可以使用 `--yes` 跳過互動確認：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Hsing24/shell-tinypng/main/install.sh | bash -s -- --yes
+```
+
+### 手動安裝
+
 ```bash
 # 下載腳本
 curl -o tinypng.sh https://raw.githubusercontent.com/Hsing24/shell-tinypng/main/tinypng.sh
@@ -36,7 +52,7 @@ sudo mv tinypng.sh /usr/local/bin/tinypng
 將你的 API Key 設為環境變數：
 
 ```bash
-export TINYFY_API_KEY="your-api-key"
+export TINYPNG_API_KEY="your-api-key"
 ```
 
 建議加入 `~/.bashrc` 或 `~/.zshrc` 以持久化。
